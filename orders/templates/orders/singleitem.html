@@ -1,0 +1,15 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+Single Menu Item {{ item.id }}
+{% endblock %}
+
+{% block body %}
+    <h1>Single Menu Item {{ item.id }}</h1>
+    <ul>
+        <li>Category: {{ item.get_category_display }}</li>
+        <li>Name: "{{ item.name }}"</li>
+        <li>Size: {{ item.get_size_display }}</li>
+        <li>Price: {{ item.price }}</li>
+    </ul>
+{% endblock %}

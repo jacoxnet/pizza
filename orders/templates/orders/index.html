@@ -1,0 +1,16 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+Full Menu
+{% endblock %}
+
+{% block body %}
+    <h1>Full Menu</h1>
+    <ul>
+        {% for item in fullmenu %}
+            <li>
+                <a href="{% url 'singleitem' item.id %}">{{ item }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
