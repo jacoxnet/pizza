@@ -37,7 +37,10 @@ def login_view(request):
             messages.add_message(request, messages.INFO, "Login unsuccessful")
             return render(request, "orders/login.html")
     else:
-        return render(request, "orders/login.html")
+        context = {
+           "cart": request.session.get("cart")
+        }
+        return render(request, "orders/login.html", context)
 
 def logout_view(request):
     logout(request)
@@ -76,7 +79,10 @@ def register(request):
         messages.add_message(request, messages.INFO, "Registration successful")
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "orders/register.html")
+        context = {
+           "cart": request.session.get("cart")
+        }
+        return render(request, "orders/register.html", context)
 
 # route menu1/
 def menu1(request):
