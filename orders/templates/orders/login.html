@@ -1,0 +1,37 @@
+{% extends "orders/base.html" %}
+{% load static %}
+
+{% block title %}
+Select Menu Category
+{% endblock %}
+
+{% block body %}
+
+<div id="logind">
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Log In</button>
+    </form>
+    <p>Don't have an account? Please <a href={% url 'register' %}>register</a></p>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* sets nav bar item to active */
+        var p = localStorage.getItem('page')
+        document.querySelector(p).classList.remove('active');
+        document.querySelector('#login').classList.add('active');
+        localStorage.setItem('page', '#login');
+
+    });
+</script>
+
+{% endblock %}

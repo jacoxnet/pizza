@@ -1,0 +1,49 @@
+{% extends "orders/base.html" %}
+{% load static %}
+
+{% block title %}
+Select Menu Item
+{% endblock %}
+
+{% block body %}
+<div class="menuheading">Menu Items -- {{ category }}</div>
+<div class="container w-75 p-3">
+    <ul class="category">
+        {% for item in items %}
+            <div id="{{ item.name }}" class="{% if forloop.counter|divisibleby:2 %}even{%else %}odd{% endif %}category" onclick="setitem('{{ item.id }}')">
+                <li>
+                    {{ item.name }},
+                    {% if not item.sized %}
+                        Price: ${{ item.priceS }}
+                    {% else %}
+                        ${{ item.priceS }} (small), ${{ item.priceL }} (large)
+                    {% endif %}
+                </li>
+            </div>
+        {% endfor %}
+    </ul>  
+    <form id="myform2" action="{% url 'menu3' %}" method="post">
+        {% csrf_token %}
+        <input class="form-control" name="selectitem" type="text" value="" hidden>
+    </form>                
+</div>
+      
+<script>
+    /* Called on click of menu item to make selection - submits form*/
+    function setitem(value) {
+        document.querySelector('input[name="selectitem"]').setAttribute('value', value);
+        document.querySelector("#myform2").submit();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* sets nav bar item to active */
+        var p = localStorage.getItem('page')
+        document.querySelector(p).classList.remove('active');
+        document.querySelector('#order').classList.add('active');
+        localStorage.setItem('page', '#order');
+
+    });
+</script>
+
+{% endblock %}

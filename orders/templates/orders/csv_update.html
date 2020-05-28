@@ -1,0 +1,42 @@
+{% extends "orders/base.html" %}
+
+{% block title %}
+Upload File
+{% endblock %}
+
+{% block body %}
+    <div class="container w-75 p-3" style="border:1px solid black;padding:0em;">
+        <h4>Upload MenuItem CSV File</h4>
+        <p>Upload a csv file with category.type, name, sized ("TRUE" OR "FALSE"), priceS, priceL</p>
+        <p style="font-style:italic;">Example line: Pizza, 4 Topping Pizza, TRUE, 17.50, 20.50</p>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+                {{ form }}
+            <input type="submit" value="Upload and process" name="menuitem">
+        </form>
+    </div>
+    <div class="container w-75 p-3" style="border:1px solid black;padding:0em;">
+        <h4>Upload Addon CSV File</h4>
+        <p>Upload a csv file with name, price, category.type</p>
+        <p style="font-style:italic;">Example line: Black Olives, 0.50, Subs</p>
+        <p>Note: addons will automatically be added to MenuItems in same category</p>
+            <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+                {{ form }}
+            <input type="submit" value="Upload and process" name="addon">
+        </form>
+    </div>
+    
+    <script>
+    
+    document.addEventListener('DOMContentLoaded', () => {
+
+        /* sets nav bar item to active */
+        var p = localStorage.getItem('page')
+        document.querySelector(p).classList.remove('active');
+        document.querySelector('#upload').classList.add('active');
+        localStorage.setItem('page', '#upload');
+
+    });
+</script>
+{% endblock %}

@@ -1,16 +1,26 @@
 {% extends "orders/base.html" %}
+{% load static %}
 
 {% block title %}
 Full Menu
 {% endblock %}
 
 {% block body %}
-    <h1>Full Menu</h1>
-    <ul>
-        {% for item in fullmenu %}
-            <li>
-                <a href="{% url 'singleitem' item.id %}">{{ item }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<div class="welcome1">Welcome to Pinocchio's Pizza & Subs</div>
+<div class="welcome2">home of authentic Sicilian Pizza</div>
+<div >
+    <img class="welcomepic" src="{% static 'orders/pizza.png' %}" alt="SicilianPizza">
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        var p = localStorage.getItem('page')
+        if ((p) && (p != 'None')) {
+            document.querySelector(p).classList.remove('active');
+        }
+        document.querySelector('#home').classList.add('active');
+        localStorage.setItem('page', '#home');   
+    });
+</script>
+
 {% endblock %}

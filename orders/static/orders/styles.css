@@ -1,0 +1,111 @@
+#pinhead    {
+    height: 160px;
+    text-align: center; 
+    font-family: Verdana,Arial,Helvetica sans-serif; 
+    margin: 0;
+    border-style: solid;
+}
+
+#pintable {
+    text-align: center;
+}
+
+.pname {
+    padding-top: 1em;
+}
+
+#pinimg {
+    float: right;
+    padding-right: 1em;
+    width: 70px;
+    height: auto;
+}
+
+#greenbox {
+    background-color: #239346;
+}
+
+#redbox {
+    background-color: #be0027;  
+}
+
+.navbar {
+    color: #239346;
+}
+
+.welcome1, .welcome2 {
+    text-align: center;
+    background-color: lightgray;
+}
+
+.welcome1 {
+    font-size:xx-large;
+    border-top: 2px solid black;
+}
+
+.welcome2 {
+    font-size:large;
+    font-style:italic;
+    padding-bottom: 5px;
+    /*margin-bottom: 10px;*/
+    border-bottom: 2px solid black;
+}
+
+.welcomepic {
+    width: 100%;
+    height: auto;
+    border: 2px solid black;
+    border-collapse: true;
+}
+
+.menuheading {
+    font-size:x-large;
+    border-top: 2px solid black;
+    text-align: center;
+    padding:1em;
+}
+
+div.evencategory, div.oddcategory {
+    font-size: medium;
+    font-weight:bolder;
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+div.evencategory {
+    background-color: #be0027; 
+}
+
+div.oddcategory {
+background-color: #239346;
+}
+
+ul.category {
+    list-style: none;
+}
+
+div.oddcategory:hover {
+    color:darkgray;
+}
+
+div.evencategory:hover {
+    color:darkgray;
+}
+
+#carttable td {
+    line-height: 1em;
+    padding: 10px;
+}
+
+#logind, #register {
+    width: 50%;
+    text-align: center;
+    margin: auto;
+    border: 2px solid black;
+    padding: 30px;
+    background-color:rgb(238, 231, 229) }
+
+#adminorders, #upload {
+    color: red;
+}
