@@ -31,11 +31,12 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            loadcart(request)
             messages.add_message(request, messages.INFO, "Login successful")
             return HttpResponseRedirect(reverse("index"))
         else:
             messages.add_message(request, messages.INFO, "Login unsuccessful")
-            return render(request, "orders/login.html")
+            return HttpResponseRedirect(reverse("login"))
     else:
         context = {
            "cart": request.session.get("cart")
@@ -43,6 +44,7 @@ def login_view(request):
         return render(request, "orders/login.html", context)
 
 def logout_view(request):
+    savecart(request)
     logout(request)
     messages.add_message(request, messages.INFO, "Logged out")
     return HttpResponseRedirect(reverse("index"))
@@ -189,11 +191,11 @@ def deletecartitem(request, cartnum):
 def placeorder(request):
     if not request.user.is_authenticated:
         messages.add_message(request, messages.INFO, "Please login first")
-        return render(request, "orders/login.html")
+        return HttpResponseRedirect(reverse("login"))
     user = request.user
     cart_items = request.session.get("cart_items")
     total_price = 0
-    order = PiOrder(user=user, time=datetime.now(), status="In Process")
+    order = PiOrder(user=user, time=datetime.now(), status="In process")
     order.save()
     for item in cart_items:
         orderitem = OrderItem(name=item["name"], menu_id=item["id"], size=item["size"], price=item["price"], addons=item["addons"])
@@ -204,11 +206,15 @@ def placeorder(request):
     order.save()
     request.session["cart"] = 0
     request.session["cart_items"] = []
+    savecart(request)
     messages.add_message(request, messages.INFO, "Order recorded")
     return HttpResponseRedirect(reverse("index"))
     
 # route adminorders/
 def adminorders(request):
+    if not request.user.is_superuser:
+        messages.add_message(request, messages.INFO, "Please login as superuser first")
+        return render(request, "orders/login.html")
     allorders = PiOrder.objects.all()
     context = {
         "allorders": allorders
@@ -282,3 +288,52 @@ def upload(request):
         # called by GET request
         form = UploadFileForm()
         return render(request, 'orders/csv_update.html', {'form': form})
+
+# save session-based cart PiOrder and OrderItem with status = "In cart"
+def savecart(request):
+    if not request.user.is_authenticated:
+        return
+    user = request.user
+    # delete any prior DB entry
+    prior_cart = PiOrder.objects.filter(user=user, status="In cart")
+    if len(prior_cart) > 0:
+        prior_cart[0].items.all().delete()
+        prior_cart[0].delete()
+    # save to new entry in DB
+    cart = request.session.get("cart")
+    if cart > 0:
+        cart_items = request.session.get("cart_items")
+        total_price = 0
+        order = PiOrder(user=user, time=datetime.now(), status="In cart")
+        order.save()
+        for item in cart_items:
+            orderitem = OrderItem(name=item["name"], menu_id=item["id"], size=item["size"], price=item["price"], addons=item["addons"])
+            orderitem.save()
+            order.items.add(orderitem)
+            total_price += item["price"]
+        order.price = total_price
+        order.save()
+    return
+
+def loadcart(request):
+    if not request.user.is_authenticated:
+        return
+    if request.session.get("cart") > 0:
+        # user already has cart => don't load
+        return
+    user = request.user
+    prior_cart = PiOrder.objects.filter(user=user, status="In cart")
+    if prior_cart.count() == 0:
+        return
+    request.session["cart"] = prior_cart[0].items.count()
+    request.session["cart_items"] = []
+    for item in prior_cart[0].items.all():
+        value = {"name": item.name,
+            "id": item.menu_id,
+            "size": item.size,
+            "price": float(item.price),
+            "addons": item.addons
+        }
+        request.session["cart_items"].append(value)
+    request.session.modified = True
+    return

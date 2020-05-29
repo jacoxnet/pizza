@@ -25,7 +25,7 @@ class Addon(models.Model):
         return self.name
 
 class MenuItem(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.SET(""))
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     sized = models.BooleanField(default=True)
     priceS = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)
@@ -64,7 +64,8 @@ class PiOrder(models.Model):
     time = models.DateTimeField(null=True)
     items = models.ManyToManyField(OrderItem, blank=True)
     price = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)
-    # status should be "In Process", "Canceled", or "Completed"
+    # status should be "In cart" "In process", "canceled", or "completed"
+    # In cart
     status = models.CharField(max_length=25, blank=True)
 
     def __str__(self):

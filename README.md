@@ -49,7 +49,7 @@ class PiOrder:
 
 ### session
 
-The app uses session storage to hold the current shopping cart items prior to placing an order. By using session storage, the cart will be there for the user when she returns again after closing the app's window.
+The app uses session storage to hold the current shopping cart items prior to placing an order. By using session storage, the cart will be there for the user when she returns again after closing the app's window. However, because session storage is flushed by Django on logout, it was necessary to save the users' carts to the database so the carts can be restored when they login again.
 
 ## How to use
 
@@ -106,7 +106,7 @@ Also, the `Begin Order` item has changed to `Continue Order` to reflect that the
 
 ### Cart
 
-Clicking on the Cart navigation item will display any items currently in the user's Cart. If there are items in the Cart, a "Place Order" button will be enabled. If the user clicks it, and if the user is logged in, the order is recorded in the database and given an initial status of "In process." 
+Clicking on the Cart navigation item will display any items currently in the user's Cart. If there are items in the Cart, a "Place Order" button will be enabled. If the user clicks it, and if the user is logged in, the order is recorded in the database and given an initial status of "In process."
 
 If the user is not logged in, she is taken to the "Login" page, which she must complete before returning to the Cart to order the items. (Items selected before login remain in the cart after the login process and can then be ordered.)
 
@@ -128,7 +128,7 @@ Session and cart information, while retained if the web browser window closes or
 
 ### Site administrator functions
 
-If a user with "superuser" privileges (a site administrator) logs in to the web app, two new menu items become visible. These two menu items, `AdminOrders` and `UploadMenu`.
+If a user with "superuser" privileges (a site administrator) logs in to the web app, two new menu items become visible.
 
 - `AdminOrders` retrieves all existing orders from anyone and displays them for the administrative user.
-- `UploadMenu` displays a page that allows the administrative user to upload csv files to populate new or modified items in the MenuItem and Addon database models. If an item in the csv file has the same name as one already in the database, the existing item is replaced, allowing updates of pricing, sizes, and so on. Addons are automatically added to all MenuItems in the same Category, so if some items in the same category (such as certain Subs) do not carry the same addons as others, the administrator must update these items separately in the admin interface.
+- `UploadMenu` displays a page that allows the administrative user to upload csv files to populate new or modified items in the MenuItem and Addon database models. If an item in the csv file has the same name and category as one already in the database, the existing item is replaced, allowing updates of other attributes such as pricing, sizes, and so on. Addons are automatically added to all MenuItems in the same Category, so if some items in the same category (such as certain Subs) do not carry the same addons as others, the administrator must update these items separately in the admin interface.
