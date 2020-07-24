@@ -1,14 +1,12 @@
-# Project 3
 
-Web Programming with Python and JavaScript
 
-## Pinocchio's Pizza Ordering System
-
-This project was prepared to satisy project3 in the online version of this class.
+# Pinocchio's Pizza Ordering System
 
 ## Introduction
 
 Pinocchio's is a web application that implements an online version of the menu of the traditional Harvard Square pizza shop, Pinocchio's. The basic functions of the app are:
+
+This project was prepared to satisy project3 in the online version of CS50x Web Programming with Python and JavaScript.
 
 - *Begin (or Continue) Order*. The user can traverse a hierarchical version of the Pinoccio's menu, selecting items to order, which are placed in a virtual cart.
 
